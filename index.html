@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSL Auction Showcase</title>
+    
+    <!-- Google Fonts: Roboto와 MuseoModerno 로드 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=MuseoModerno:wght@600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* [수정] 페이지 전체가 스크롤되도록 body 스타일 변경 */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #111; /* 페이지 기본 배경색 */
+            overflow-y: auto; /* 항상 세로 스크롤 허용 */
+            overflow-x: hidden; /* 가로 스크롤 방지 */
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-msl {
+            font-family: 'MuseoModerno', sans-serif;
+            font-weight: 600;
+        }
+
+        /* --- 1. 애니메이션 섹션 스타일 --- */
+        
+        /* [수정] .aspect-16-9 는 이제 페이지의 첫 번째 블록임 */
+        .aspect-16-9 {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            max-width: 1920px;
+            margin: auto;
+        }
+
+        .content-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3a0099, #2b007a, #0d004d);
+            color: white;
+            padding: 4vw;
+            /* [수정] '살짝 위로' 효과 (음수 마진) */
+            margin-top: -5vh; 
+        }
+
+        /* 모바일용 애니메이션 스타일 */
+        @media (max-width: 767px) {
+            .content-wrapper {
+                position: relative; /* 모바일에서는 일반 블록 */
+                height: 100vh; /* 모바일에서는 화면 꽉 채움 */
+                min-height: 500px;
+                padding: 10vh 8vw 15vh 8vw;
+                justify-content: flex-start;
+                margin-top: 0;
+            }
+            .aspect-16-9 {
+                padding-bottom: 0; /* 모바일에서는 16:9 강제 안 함 */
+                height: auto;
+            }
+        }
+        
+        /* 버튼/카피라이트 (애니메이션 내부) */
+        .animation-buttons, .copyright-text {
+            position: relative;
+            margin-top: 1.5rem;
+        }
+         @media (min-width: 768px) {
+            /* 데스크탑에서 카피라이트만 하단 고정 */
+             .copyright-text {
+                position: absolute;
+                bottom: 1.5rem;
+                margin-top: 0;
+             }
+         }
+
+
+        /* --- 2. 이미지 갤러리 섹션 스타일 --- */
+        .image-gallery-wrapper {
+            background-color: #ffffff; /* 갤러리 배경은 흰색 */
+            color: #111; /* 텍스트는 검은색 */
+            padding: 8vh 8vw; /* 넉넉한 여백 */
+        }
+        .image-gallery-wrapper img {
+            width: 100%; /* 이미지 꽉 채우기 */
+            max-width: 1200px; /* 너무 커지는 것 방지 */
+            margin: 2.5rem auto; /* 위아래 여백 및 중앙 정렬 */
+            display: block;
+            border-radius: 1rem; /* 둥근 모서리 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* 그림자 효과 */
+        }
+    </style>
+</head>
+
+<body class="bg-black">
+
+    <!-- ======================================== -->
+    <!--          1. 애니메이션 섹션              -->
+    <!-- ======================================== -->
+    <div class="aspect-16-9">
+        
+        <div class="content-wrapper">
+
+            <!-- 애니메이션 헤드라인 -->
+            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-center mb-4 leading-tight">
+                The Next Engine<br>for YouTube
+            </h1>
+            
+            <!-- 애니메이션 숫자 박스 -->
+            <div class="flex flex-col sm:flex-row gap-4 md:gap-8 my-4 md:my-8 w-full sm:w-auto">
+                
+                <div class="bg-black bg-opacity-80 p-6 rounded-2xl text-center w-full sm:min-w-[200px]">
+                    <div id="start-price" class="text-4xl md:text-5xl font-bold text-white mb-2">
+                        $50.0
+                    </div>
+                    <div class="text-lg text-gray-400">
+                        Starting price
+                    </div>
+                </div>
+
+                <div class="bg-black bg-opacity-80 p-6 rounded-2xl text-center w-full sm:min-w-[200px]">
+                    <div id="participants-count" class="text-4xl md:text-5xl font-bold text-white mb-2">
+                        2,789
+                    </div>
+                    <div class="text-lg text-gray-400">
+                        Participants
+                    </div>
+                </div>
+
+                <div class="bg-black bg-opacity-80 p-6 rounded-2xl text-center w-full sm:min-w-[200px]">
+                    <div id="current-price" class="text-4xl md:text-5xl font-bold text-pink-500 mb-2">
+                        $6.79
+                    </div>
+                    <div class="text-lg text-gray-400">
+                        Current price
+                    </div>
+                </div>
+            </div>
+
+            <!-- 애니메이션 하단 텍스트 -->
+            <p class="text-xl sm:text-2xl md:text-3xl font-bold text-yellow-400 mb-2">
+                LIVE PRICE DROP AUCTION
+            </p>
+            <p class="text-sm sm:text-base md:text-lg text-gray-200 mb-8 text-center max-w-2xl">
+                The world's first real-time, participant-based commerce protocol.
+            </p>
+            <div class="font-msl text-4xl sm:text-5xl mb-4 md:mb-8">
+                MSL
+            </div>
+
+            <!-- 애니메이션 버튼들 -->
+            <div class="animation-buttons flex flex-col md:flex-row gap-4 justify-center">
+                <!-- 'Play Again' 버튼 (초기 숨김) -->
+                <button id="playButton" class="hidden bg-white text-blue-600 font-semibold py-3 px-5 rounded-lg shadow-md hover:bg-gray-200 focus:outline-none transition-all disabled:opacity-50">
+                    Play Again
+                </button>
+                <!-- 'Start' 버튼 (초기 보임) -->
+                <button id="playButtonStart" class="bg-white text-blue-600 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-200 focus:outline-none transition-all">
+                    Start 5s Animation
+                </button>
+            </div>
+            
+            <!-- 애니메이션 카피라이트 -->
+            <p class="copyright-text text-xs text-gray-400">
+                Confidential & Proprietary. Copyright © 2024 KIM TAEIL. All Rights Reserved.
+            </p>
+        </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!--          2. 이미지 갤러리 섹션           -->
+    <!-- ======================================== -->
+    <div class="image-gallery-wrapper">
+        <h2 class="text-4xl md:text-6xl font-bold text-center mb-12 text-gray-900">
+            Product UI Showcase
+        </h2>
+
+        <!-- [수정] 10개 이미지 (올바른 Raw URL) - 순서대로 -->
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/1.png" alt="UI Showcase 1">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/2.png" alt="UI Showcase 2">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/3.png" alt="UI Showcase 3">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/4.png" alt="UI Showcase 4">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/5.png" alt="UI Showcase 5">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/6.png" alt="UI Showcase 6">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/7.png" alt="UI Showcase 7">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/8.png" alt="UI Showcase 8">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/9.png" alt="UI Showcase 9">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/10.png" alt="UI Showcase 10">
+
+        <!-- ======================================== -->
+        <!--          3. 추천 버튼 섹션             -->
+        <!-- ======================================== -->
+        <div class="text-center mt-16">
+            <h3 class="text-3xl font-bold mb-4">Interested?</h3>
+            <p class="text-lg text-gray-600 mb-6">
+                If you like this product, please leave a recommendation!
+            </p>
+            
+            <button id="recommendButton" class="w-full max-w-xs bg-green-500 text-white font-semibold py-3 px-5 rounded-lg shadow-md hover:bg-green-600 focus:outline-none transition-all disabled:opacity-50 disabled:bg-green-700 flex justify-center items-center gap-2 mx-auto">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M11 3.055A9.001 9.001 0 1019 12v1a2 2 0 01-2 2h-1a2 2 0 01-2-2v-1a2 2 0 00-2-2h-1V3.055z" />
+                    <path d="M4 14a1 1 0 011-1h1a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3z" />
+                </svg>
+                <span id="recommendText">Recommend</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!--          4. 스크립트 섹션                -->
+    <!-- ======================================== -->
+    <script>
+        // --- 1. 애니메이션 스크립트 ---
+        const playButtonStart = document.getElementById('playButtonStart'); // 'Start' 버튼
+        const playButton = document.getElementById('playButton'); // 'Play Again' 버튼
+        
+        const participantsElement = document.getElementById('participants-count');
+        const priceElement = document.getElementById('current-price');
+        
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                let currentValue = start + (end - start) * progress;
+                
+                if (obj.id === 'participants-count') {
+                    obj.innerHTML = Math.floor(currentValue).toLocaleString();
+                    if (progress === 1) obj.innerHTML = "3,150+";
+                } 
+                else if (obj.id === 'current-price') {
+                    obj.innerHTML = `$${currentValue.toFixed(2)}`;
+                }
+                
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function runAnimation() {
+            playButtonStart.classList.add('hidden'); // 'Start' 버튼 숨기기
+            playButton.classList.add('hidden'); // 'Play Again'도 일단 숨기기
+            
+            participantsElement.innerHTML = "2,789";
+            priceElement.innerHTML = "$6.79";
+
+            animateValue(participantsElement, 2789, 3150, 5000); 
+            animateValue(priceElement, 6.79, 4.90, 5000);   
+
+            setTimeout(() => {
+                playButton.classList.remove('hidden'); // 5초 후 'Play Again' 버튼 보이기
+            }, 5000);
+        }
+
+        playButtonStart.addEventListener('click', runAnimation);
+        playButton.addEventListener('click', runAnimation);
+
+        // --- 2. 추천 버튼 스크립트 ---
+        const recommendButton = document.getElementById('recommendButton');
+        const recommendText = document.getElementById('recommendText');
+        
+        // (!!!) Tally 폼 가이드 보고 만든 Tally 폼 링크를 여기에 넣으세요 (!!!)
+        const TALLY_FORM_URL = "https://tally.so/r/YOUR-FORM-ID-HERE"; 
+
+        recommendButton.addEventListener('click', () => {
+            recommendText.textContent = 'Recommended!';
+            recommendButton.disabled = true;
+            recommendButton.classList.add('opacity-50', 'disabled:bg-green-700');
+            
+            // 0.5초 후 Tally 폼으로 이동
+            setTimeout(() => {
+                window.location.href = TALLY_FORM_URL;
+                // Tally 폼으로 이동 후, 2초 뒤에 버튼 텍스트를 원래대로 돌려놓음 (선택 사항)
+                setTimeout(() => {
+                     recommendText.textContent = 'Recommend';
+                     recommendButton.disabled = false;
+                     recommendButton.classList.remove('opacity-50', 'disabled:bg-green-700');
+                }, 2000);
+            }, 500);
+        });
+    </script>
+
+</body>
+</html>
