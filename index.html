@@ -11,12 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=MuseoModerno:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* [수정] 페이지 전체가 스크롤되도록 body 스타일 변경 */
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #111; /* 페이지 기본 배경색 */
-            overflow-y: auto; /* 항상 세로 스크롤 허용 */
-            overflow-x: hidden; /* 가로 스크롤 방지 */
+            background-color: #111; 
+            overflow-y: auto; 
+            overflow-x: hidden; 
             margin: 0;
             padding: 0;
             -webkit-font-smoothing: antialiased;
@@ -30,7 +29,6 @@
 
         /* --- 1. 애니메이션 섹션 스타일 --- */
         
-        /* [수정] .aspect-16-9 는 이제 페이지의 첫 번째 블록임 */
         .aspect-16-9 {
             position: relative;
             width: 100%;
@@ -53,59 +51,103 @@
             justify-content: center;
             background: linear-gradient(135deg, #3a0099, #2b007a, #0d004d);
             color: white;
-            padding: 4vw;
-            /* [수정] '살짝 위로' 효과 (음수 마진) */
-            margin-top: -5vh; 
+            padding: 2vw 4vw; 
+            box-sizing: border-box;
         }
 
-        /* 모바일용 애니메이션 스타일 */
+        /* [수정] 모바일용 애니메이션 스타일 (겹침 문제 해결) */
         @media (max-width: 767px) {
             .content-wrapper {
-                position: relative; /* 모바일에서는 일반 블록 */
-                height: 100vh; /* 모바일에서는 화면 꽉 채움 */
-                min-height: 500px;
-                padding: 10vh 8vw 15vh 8vw;
-                justify-content: flex-start;
-                margin-top: 0;
+                position: relative; 
+                height: auto; /* [수정] 100vh 고정 높이 삭제 */
+                min-height: auto; /* [수정] 최소 높이 삭제 */
+                padding: 4rem 1.5rem; /* [수정] 패딩 값 (16, 6)으로 변경 */
+                justify-content: center; /* [수정] flex-start -> center */
             }
             .aspect-16-9 {
-                padding-bottom: 0; /* 모바일에서는 16:9 강제 안 함 */
+                padding-bottom: 0; 
                 height: auto;
+                margin-bottom: 0; /* [수정] 검은 공간 삭제 */
             }
         }
         
         /* 버튼/카피라이트 (애니메이션 내부) */
-        .animation-buttons, .copyright-text {
-            position: relative;
-            margin-top: 1.5rem;
+        .animation-buttons {
+            position: relative; 
+            margin-top: 2rem; 
+            width: 100%;
+            text-align: center;
         }
+        
+        .copyright-text {
+            position: absolute;
+            bottom: 1rem;
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem; 
+            color: rgba(255, 255, 255, 0.6); 
+        }
+
          @media (min-width: 768px) {
-            /* 데스크탑에서 카피라이트만 하단 고정 */
+            /* [수정] 데스크탑 카피라이트 위로 더 올리기 */
              .copyright-text {
                 position: absolute;
-                bottom: 1.5rem;
+                bottom: 3.5rem; /* [수정] 1rem -> 3.5rem */
                 margin-top: 0;
+                width: 100%;
+                text-align: center;
              }
+             .animation-buttons {
+                 position: relative; 
+                 top: auto;
+                 right: auto;
+                 width: 100%;
+                 margin-top: 2rem;
+             }
+         }
+         
+         /* [수정] 휴대폰 겹침 문제 해결 */
+         @media (max-width: 767px) {
+            .copyright-text {
+                position: relative; /* absolute 해제 */
+                margin-top: 2rem;
+                bottom: auto;
+            }
+            .animation-buttons {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-top: 2rem;
+            }
          }
 
 
         /* --- 2. 이미지 갤러리 섹션 스타일 --- */
         .image-gallery-wrapper {
-            /* [수정] 배경 검은색으로 */
             background-color: #111; 
-            /* [수정] 기본 텍스트 밝은 회색으로 */
-            color: #e5e7eb; /* text-gray-200 */
-            padding: 8vh 8vw; /* 넉넉한 여백 */
+            color: #fff; 
+            padding: 8vh 8vw; 
         }
         .image-gallery-wrapper img {
-            width: 100%; /* 이미지 꽉 채우기 */
-            max-width: 1200px; /* 너무 커지는 것 방지 */
-            margin: 2.5rem auto; /* 위아래 여백 및 중앙 정렬 */
+            width: 100%; 
+            max-width: 1200px; 
+            margin: 2.5rem auto; 
             display: block;
-            border-radius: 1rem; /* 둥근 모서리 */
-            /* [수정] 검은 배경에 어울리게 그림자 약하게 변경 */
+            border-radius: 1rem; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
         }
+        
+        /* [신규] 페이드인 효과 */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
     </style>
 </head>
 
@@ -118,12 +160,12 @@
         
         <div class="content-wrapper">
 
-            <!-- 애니메이션 헤드라인 -->
+            <!-- [수정] 헤드라인 변경 (The Next Engine...) -->
             <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-center mb-4 leading-tight">
                 The Next Engine<br>for YouTube
             </h1>
             
-            <!-- 애니메이션 숫자 박스 -->
+            <!-- [수정] 간격(margin) 복원 -->
             <div class="flex flex-col sm:flex-row gap-4 md:gap-8 my-4 md:my-8 w-full sm:w-auto">
                 
                 <div class="bg-black bg-opacity-80 p-6 rounded-2xl text-center w-full sm:min-w-[200px]">
@@ -154,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- 애니메이션 하단 텍스트 -->
+            <!-- [수정] 간격(margin) 복원 -->
             <p class="text-xl sm:text-2xl md:text-3xl font-bold text-yellow-400 mb-2">
                 LIVE PRICE DROP AUCTION
             </p>
@@ -165,20 +207,20 @@
                 MSL
             </div>
 
-            <!-- 애니메이션 버튼들 -->
-            <div class="animation-buttons flex flex-col md:flex-row gap-4 justify-center">
-                <!-- 'Play Again' 버튼 (초기 숨김) -->
-                <button id="playButton" class="hidden bg-white text-blue-600 font-semibold py-3 px-5 rounded-lg shadow-md hover:bg-gray-200 focus:outline-none transition-all disabled:opacity-50">
-                    Play Again
-                </button>
+            <!-- [수정] 버튼 위치 변경 (MSL 로고 아래) -->
+            <div class="animation-buttons">
                 <!-- 'Start' 버튼 (초기 보임) -->
                 <button id="playButtonStart" class="bg-white text-blue-600 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-200 focus:outline-none transition-all">
                     Start 5s Animation
                 </button>
+                <!-- 'Play Again' 버튼 (초기 숨김) -->
+                <button id="playButton" class="hidden bg-white text-blue-600 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-200 focus:outline-none transition-all disabled:opacity:50">
+                    Play Again
+                </button>
             </div>
             
-            <!-- 애니메이션 카피라이트 -->
-            <p class="copyright-text text-xs text-gray-400">
+            <!-- [수정] 애니메이션 카피라이트 (중앙 정렬됨) -->
+            <p class="copyright-text">
                 Confidential & Proprietary. Copyright © 2024 KIM TAEIL. All Rights Reserved.
             </p>
         </div>
@@ -188,54 +230,48 @@
     <!--          2. 이미지 갤러리 섹션           -->
     <!-- ======================================== -->
     <div class="image-gallery-wrapper">
-        <!-- [수정] 텍스트 흰색으로 -->
-        <h2 class="text-4xl md:text-6xl font-bold text-center mb-12 text-white">
-            Product UI Showcase
+        <h2 class="text-4xl md:text-6xl font-bold text-center mb-12 text-gray-100">
+            Auction application Showcase
         </h2>
 
-        <!-- 10개 이미지 (올바른 Raw URL) - 순서대로 -->
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/1.png" alt="UI Showcase 1">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/2.png" alt="UI Showcase 2">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/3.png" alt="UI Showcase 3">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/4.png" alt="UI Showcase 4">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/5.png" alt="UI Showcase 5">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/6.png" alt="UI Showcase 6">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/7.png" alt="UI Showcase 7">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/8.png" alt="UI Showcase 8">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/9.png" alt="UI Showcase 9">
-        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/10.png" alt="UI Showcase 10">
+        <!-- [신규] 페이드인 효과를 위해 fade-in-element 클래스 추가 -->
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/1.png" alt="UI Showcase 1" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/2.png" alt="UI Showcase 2" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/3.png" alt="UI Showcase 3" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/4.png" alt="UI Showcase 4" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/5.png" alt="UI Showcase 5" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/6.png" alt="UI Showcase 6" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/7.png" alt="UI Showcase 7" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/8.png" alt="UI Showcase 8" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/9.png" alt="UI Showcase 9" class="fade-in-element">
+        <img src="https://raw.githubusercontent.com/globalquantumm/MSL-Showcase/main/10.png" alt="UI Showcase 10" class="fade-in-element">
 
         <!-- ======================================== -->
         <!--          3. 추천 버튼 섹션             -->
         <!-- ======================================== -->
         <div class="text-center mt-16">
-            <!-- [수정] 텍스트 흰색/밝은회색으로 -->
-            <h3 class="text-3xl font-bold mb-4 text-white">Interested in this Auction application?</h3>
-            <p class="text-lg text-gray-300 mb-6">
-                If you like this product, please leave a recommendation!
+            <h3 class="text-3xl font-bold mb-4">Interested?</h3>
+            <p class="text-lg text-gray-400 mb-6">
+                If you like this Auction application, please leave a recommendation!
             </p>
             
             <button id="recommendButton" class="w-full max-w-xs bg-green-500 text-white font-semibold py-3 px-5 rounded-lg shadow-md hover:bg-green-600 focus:outline-none transition-all disabled:opacity-50 disabled:bg-green-700 flex justify-center items-center gap-2 mx-auto">
-                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0.0 20 20" fill="currentColor">
                     <path d="M11 3.055A9.001 9.001 0 1019 12v1a2 2 0 01-2 2h-1a2 2 0 01-2-2v-1a2 2 0 00-2-2h-1V3.055z" />
                     <path d="M4 14a1 1 0 011-1h1a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3z" />
                 </svg>
                 <span id="recommendText">Recommend</span>
             </button>
         </div>
-
-        <!-- ======================================== -->
-        <!--          [신규] 4. 하단 저작권 섹션      -->
-        <!-- ======================================== -->
-        <div class="text-center mt-24 pt-12 border-t border-gray-700">
-            <p class="text-xs text-gray-500">
-                Confidential & Proprietary. Copyright © 2024 KIM TAEIL. All Rights Reserved.
-            </p>
-        </div>
+        
+        <!-- [신규] 갤러리 하단 카피라이트 -->
+        <p class="text-center text-gray-500 text-xs mt-16">
+            Confidential & Proprietary. Copyright © 2024 KIM TAEIL. All Rights Reserved.
+        </p>
     </div>
 
     <!-- ======================================== -->
-    <!--          5. 스크립트 섹션 (변경 없음)    -->
+    <!--          4. 스크립트 섹션                -->
     <!-- ======================================== -->
     <script>
         // --- 1. 애니메이션 스크립트 ---
@@ -287,8 +323,7 @@
         const recommendButton = document.getElementById('recommendButton');
         const recommendText = document.getElementById('recommendText');
         
-        // [수정] 사용자님의 Tally 폼 링크를 여기에 넣었습니다!
-        const TALLY_FORM_URL = "https://tally.so/r/mxyDPj"; 
+        const TALLY_FORM_URL = "https://tally.so/r/mxyDPj"; // (태일님의 Tally 폼 링크)
 
         recommendButton.addEventListener('click', () => {
             recommendText.textContent = 'Recommended!';
@@ -306,8 +341,24 @@
                 }, 2000);
             }, 500);
         });
+        
+        // --- 3. [신규] 페이드인 스크립트 ---
+        const fadeInElements = document.querySelectorAll('.fade-in-element');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1 // 이미지가 10% 보일 때
+        });
+
+        fadeInElements.forEach(element => {
+            observer.observe(element);
+        });
     </script>
 
 </body>
 </html>
-
